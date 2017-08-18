@@ -11,21 +11,23 @@ int main(int argc, char *argv[])
     it = skiplist.end();
     cout << (skiplist.begin() == skiplist.end());
 
+
     for (int i = 0; i != 5; i++)
     {
         skiplist.emplace(i, i);
     }
 
-    for (int i = 0; i != 5; i++)
-    {
-        skiplist.emplace(2, i);
-    }
 
     if (skiplist.find(1) == skiplist.end())
         cout << "not found" << endl;
     else
         cout << "found" << endl;
 
-    cout << "Hello World!" << endl;
+    skiplist.erase((skiplist.end()--));
+
+    skiplist.emplace(10, 10);
+
+    skiplist.debug();
+
     return 0;
 }
