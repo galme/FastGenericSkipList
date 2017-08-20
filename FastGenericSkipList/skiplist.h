@@ -51,14 +51,15 @@ public:
      private:
          Node* it;
      public:
-        iterator(Node* node) : it(node) { }
-        iterator operator++(int) { return it->next[0]; }
-        iterator& operator++() { return iterator(it->next[0]); }
-        iterator operator--(int) { return it->prev[0]; }
-        iterator& operator--() { return iterator(it->prev[0]); }
+        iterator(Node* node = NULL) : it(node) { }
+        iterator operator++(int) { it = it->next[0]; return it; }
+        iterator& operator++() { it = it->next[0]; return iteratori(it); }
+        iterator operator--(int) { it = it->prev[0]; return it; }
+        iterator& operator--() { it = it->prev[0]; return iterator(it); }
         bool operator==(iterator& other) const { return it == other.it; }
         bool operator!=(iterator& other) const { return it != other.it; }
         std::pair<Key, T>& operator*() { return it->pair; }
+        std::pair<Key, T>* operator->() { return &it->pair; }
 
         // iterator traits
         using difference_type = std::ptrdiff_t;
@@ -70,25 +71,25 @@ public:
 
     typedef int size_type;
 
-    SkipList(unsigned int maxLevels = 32);
+    SkipList(unsigned int maxLevels = 42); // 42 is surely the best option :>
     ~SkipList();
 
     typename SkipList<Key, T, Compare>::iterator emplace(Key key, T value);
     typename SkipList<Key, T, Compare>::iterator emplace(std::pair<Key, T> pair);
     typename SkipList<Key, T, Compare>::iterator emplace_hint(typename SkipList<Key, T, Compare>::iterator position, Key key, T value);
     typename SkipList<Key, T, Compare>::iterator emplace_hint(typename SkipList<Key, T, Compare>::iterator position, std::pair<Key, T> pair);
-    iterator find(Key key);
-    iterator erase(typename SkipList<Key, T, Compare>::iterator it);
+    typename SkipList<Key, T, Compare>::iterator find(Key key);
+    typename SkipList<Key, T, Compare>::iterator erase(typename SkipList<Key, T, Compare>::iterator it);
     size_type erase(Key it);
 
-    iterator begin() const;
-    iterator end() const;
+    typename SkipList<Key, T, Compare>::iterator begin() const;
+    typename SkipList<Key, T, Compare>::iterator end() const;
     bool empty() const;
     void debug();
 
 private:
-     const int levelCap; // max num of levels ("height")
-     int currentLevelCount = 1; // current "height" of skip-list
+     const int maxHeight; // max num of levels ("height")
+     int currentHeight = 0; // current "height" of skip-list
      Node* head; // head of skiplist
      Node* tail; // tail of skiplist
 
@@ -99,16 +100,16 @@ private:
 /** implementation **/
 
 template<typename Key, typename T, class Compare>
-SkipList<Key, T, Compare>::SkipList(unsigned int maxLevels) : levelCap(maxLevels) // initialises a skiplist with the specified level height
+SkipList<Key, T, Compare>::SkipList(unsigned int maxHeight) : maxHeight(maxHeight) // initialises a skiplist with the specified level height
 {
     // init space for head and tail
-    head = new Node(levelCap);
-    tail = new Node(levelCap);
+    head = new Node(maxHeight);
+    tail = new Node(maxHeight);
 
     // init head and tail pointers
     head->prev = NULL;
     tail->next = NULL;
-    for (int i = 0; i != levelCap; i++)
+    for (int i = 0; i != maxHeight; i++)
     {
         head->next[i] = tail;
         tail->prev[i] = head;
@@ -144,16 +145,16 @@ typename SkipList<Key, T, Compare>::iterator SkipList<Key, T, Compare>::emplace(
     std::frexp(p, &lvl);
     lvl = -lvl;
 
-    if (lvl >= levelCap)
-        lvl = levelCap;
-    if (lvl >= currentLevelCount)
-        currentLevelCount = lvl + 1;
+    if (lvl >= maxHeight)
+        lvl = maxHeight - 1;
+    if (lvl >= currentHeight)
+        currentHeight = lvl + 1;
 
     // insertion
     Node* newNode = new Node(key, value, lvl); // creation
     Node* it = head; // our node iterator
     // iterate over levels, from top to bottom
-    for (int i = currentLevelCount - 1; i >= 0; i--)
+    for (int i = currentHeight - 1; i >= 0; i--)
     {
         // iterate throught the current level, from left to right
         for (it; it->next[i] != tail; it = it->next[i])
@@ -186,7 +187,7 @@ template<typename Key, typename T, class Compare>
 typename SkipList<Key, T, Compare>::iterator SkipList<Key, T, Compare>::emplace_hint(typename SkipList<Key, T, Compare>::iterator position, Key key, T value) // inserts a new element in the SkipList, with a hint on the insertion position
 {
     // is the given position invalid ?
-    if (Compare()(position.it->pair.first, key))
+    if (Compare()(position.it->pair.first, key) || position == end())
         return emplace(key, value); // --> then we ignore the hint entirely
 
     std::uniform_real_distribution<double> distribution(0.0, 1.0);
@@ -200,10 +201,10 @@ typename SkipList<Key, T, Compare>::iterator SkipList<Key, T, Compare>::emplace_
     std::frexp(p, &lvl);
     lvl = -lvl;
 
-    if (lvl >= levelCap)
-        lvl = levelCap;
-    if (lvl >= currentLevelCount)
-        currentLevelCount = lvl + 1;
+    if (lvl >= maxHeight)
+        lvl = maxHeight - 1;
+    if (lvl >= currentHeight)
+        currentHeight = lvl + 1;
 
     // insertion
     Node* newNode = new Node(key, value, lvl); // creation
@@ -211,7 +212,7 @@ typename SkipList<Key, T, Compare>::iterator SkipList<Key, T, Compare>::emplace_
     // iterate over levels, from position.height to bottom
     for (int i = it->height - 1; i >= 0; i--)
     {
-        // iterate throught the current level, from left to right
+        // iterate through the current level, from left to right
         for (it; it->next[i] != tail; it = it->next[i])
         {
             if(Compare()(it->next[i]->pair.first, key))
@@ -230,8 +231,9 @@ typename SkipList<Key, T, Compare>::iterator SkipList<Key, T, Compare>::emplace_
     }
 
     // iterate over levels, from position.height to currentLevelCount (up)
-    int i = position.it->height - 1; // we've built to that height at max
-    it = newNode->prev[i]; // last node at least as high as @position
+    int i = position.it->height - 1; // we've built to that lvl at max
+    if (i < lvl)
+        it = newNode->prev[i]; // last node at least as high as @position
     while(i < lvl)
     {
         // iterate through the current level, from right to left
@@ -266,7 +268,7 @@ typename SkipList<Key, T, Compare>::iterator SkipList<Key, T, Compare>::find(Key
 {
     Node* it = head; // our node iterator
     // iterate over levels, from top to bottom
-    for (int i = currentLevelCount - 1; i >= 0; i--)
+    for (int i = currentHeight - 1; i >= 0; i--)
     {
         // iterate throught the current level, from left to right
         for (it; it->next[i] != tail; it = it->next[i])
@@ -296,7 +298,6 @@ typename SkipList<Key, T, Compare>::iterator SkipList<Key, T, Compare>::erase(ty
         // rebind pointers
         for (int i = 0; i != it.it->height; i++)
         {
-            // @optimize : this could be done faster with memcpy...
             it.it->prev[i]->next[i] = it.it->next[i];
             it.it->next[i]->prev[i] = it.it->prev[i];
         }
@@ -317,7 +318,7 @@ typename SkipList<Key, T, Compare>::size_type SkipList<Key, T, Compare>::erase(K
     Node* it = head; // our node iterator
     Node* leftOfFound;
     // iterate over levels, from top to bottom
-    for (int i = currentLevelCount - 1; i >= 0; i--)
+    for (int i = currentHeight - 1; i >= 0; i--)
     {
         // iterate throught the current level, from left to right
         for (it; it->next[i] != tail; it = it->next[i])
@@ -338,7 +339,6 @@ typename SkipList<Key, T, Compare>::size_type SkipList<Key, T, Compare>::erase(K
                     // rebind pointers
                     for (int i = 0; i != it->height; i++)
                     {
-                        // @optimize : this could be done faster with memcpy...
                         it->prev[i]->next[i] = it->next[i];
                         it->next[i]->prev[i] = it->prev[i];
                     }
@@ -356,7 +356,6 @@ typename SkipList<Key, T, Compare>::size_type SkipList<Key, T, Compare>::erase(K
                     // rebind pointers
                     for (int i = 0; i != it->height; i++)
                     {
-                        // @optimize : this could be done faster with memcpy...
                         it->prev[i]->next[i] = it->next[i];
                         it->next[i]->prev[i] = it->prev[i];
                     }
