@@ -75,9 +75,17 @@ public:
     ~SkipList();
 
     typename SkipList<Key, T, Compare>::iterator emplace(Key key, T value);
-    typename SkipList<Key, T, Compare>::iterator emplace(std::pair<Key, T> pair);
+    inline typename SkipList<Key, T, Compare>::iterator emplace(std::pair<Key, T> pair);
+    inline typename SkipList<Key, T, Compare>::iterator insert(std::pair<Key, T> pair);
+    inline typename SkipList<Key, T, Compare>::iterator insert(Key key, T value);
+    inline typename SkipList<Key, T, Compare>::iterator insert(typename SkipList<Key, T, Compare>::iterator position, Key key, T value);
+    inline typename SkipList<Key, T, Compare>::iterator insert(typename SkipList<Key, T, Compare>::iterator position, std::pair<Key, T> pair);
+
+    template<class InputIterator>
+    void insert(InputIterator first, InputIterator last);
+
     typename SkipList<Key, T, Compare>::iterator emplace_hint(typename SkipList<Key, T, Compare>::iterator position, Key key, T value);
-    typename SkipList<Key, T, Compare>::iterator emplace_hint(typename SkipList<Key, T, Compare>::iterator position, std::pair<Key, T> pair);
+    inline typename SkipList<Key, T, Compare>::iterator emplace_hint(typename SkipList<Key, T, Compare>::iterator position, std::pair<Key, T> pair);
     typename SkipList<Key, T, Compare>::iterator find(Key key);
     typename SkipList<Key, T, Compare>::iterator erase(typename SkipList<Key, T, Compare>::iterator it);
     size_type erase(Key it);
@@ -181,6 +189,45 @@ template<typename Key, typename T, class Compare>
 typename SkipList<Key, T, Compare>::iterator SkipList<Key, T, Compare>::emplace(std::pair<Key, T> pair) // inserts a new node
 {
     return emplace(pair.first, pair.second);
+}
+
+// alias for emplace(pair)
+template<typename Key, typename T, class Compare>
+typename SkipList<Key, T, Compare>::iterator SkipList<Key, T, Compare>::insert(std::pair<Key, T> pair) // inserts a new node
+{
+    return emplace(pair);
+}
+
+// alias for emplace(key, value)
+template<typename Key, typename T, class Compare>
+typename SkipList<Key, T, Compare>::iterator SkipList<Key, T, Compare>::insert(Key key, T value) // inserts a new node
+{
+    return emplace(key, value);
+}
+
+// alias for emplace_hint(w/key, value)
+template<typename Key, typename T, class Compare>
+typename SkipList<Key, T, Compare>::iterator SkipList<Key, T, Compare>::insert(typename SkipList<Key, T, Compare>::iterator position, Key key, T value) // inserts a new node
+{
+    return emplace_hint(position, key, value);
+}
+
+// alias for emplace_hint(w/pair)
+template<typename Key, typename T, class Compare>
+typename SkipList<Key, T, Compare>::iterator SkipList<Key, T, Compare>::insert(typename SkipList<Key, T, Compare>::iterator position, std::pair<Key, T> pair) // inserts a new node
+{
+    return emplace_hint(position, pair);
+}
+
+template<typename Key, typename T, class Compare>
+template<class InputIterator>
+void SkipList<Key, T, Compare>::insert(InputIterator first, InputIterator last) // range insert
+{
+    while(first != last)
+    {
+        insert(*first);
+        first++;
+    }
 }
 
 template<typename Key, typename T, class Compare>

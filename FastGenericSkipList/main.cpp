@@ -44,141 +44,137 @@ int main(int argc, char *argv[])
 
     SkipList<int, TestClass> intSkiplist;
     multimap<int, TestClass> intMmap;
-
     SkipList<double, TestClass> doubleSkiplist;
     multimap<double, TestClass> doubleMmap;
 
-    if (true)
+    cout << "INSERTION TESTS [START]..." << endl;
+    /* INSERTION TEST: INT SKIPLIST */
+    start = std::chrono::steady_clock::now();
+    for (int i = 0; i != TEST_SIZE; i++)
     {
-        cout << "INSERTION TESTS [START]..." << endl;
-        /* INSERTION TEST: INT SKIPLIST */
-        start = std::chrono::steady_clock::now();
-        for (int i = 0; i != TEST_SIZE; i++)
-        {
-            intSkiplist.emplace(intPool[i], TestClass());
-        }
-        end = std::chrono::steady_clock::now();
-        cout << "INSERTION TEST: INT SKIPLIST - " << chrono::duration_cast<std::chrono::milliseconds>(end - start).count() << " ms" << endl;
-
-        /* INSERTION TEST: INT MULTIMAP */
-        start = std::chrono::steady_clock::now();
-        for (int i = 0; i != TEST_SIZE; i++)
-        {
-            intMmap.emplace(intPool[i], TestClass());
-        }
-        end = std::chrono::steady_clock::now();
-        cout << "INSERTION TEST: INT MULTIMAP - " << chrono::duration_cast<std::chrono::milliseconds>(end - start).count() << " ms" << endl;
-
-        /* INSERTION TEST: DOUBLE SKIPLIST */
-        start = std::chrono::steady_clock::now();
-        for (int i = 0; i != TEST_SIZE; i++)
-        {
-            doubleSkiplist.emplace(doublePool[i], TestClass());
-        }
-        end = std::chrono::steady_clock::now();
-        cout << "INSERTION TEST: DOUBLE SKIPLIST - " << chrono::duration_cast<std::chrono::milliseconds>(end - start).count() << " ms" << endl;
-
-        /* INSERTION TEST: DOUBLE MULTIMAP */
-        start = std::chrono::steady_clock::now();
-        for (int i = 0; i != TEST_SIZE; i++)
-        {
-            doubleMmap.emplace(doublePool[i], TestClass());
-        }
-        end = std::chrono::steady_clock::now();
-        cout << "INSERTION TEST: DOUBLE MULTIMAP - " << chrono::duration_cast<std::chrono::milliseconds>(end - start).count() << " ms" << endl;
-
-        cout << "INSERTION TESTS [END]..." << endl;
-
-
-
-        cout << endl;
-
-
-
-        cout << "SEARCH TESTS [START]..." << endl;
-        /* SEARCH TEST: INT SKIPLIST */
-        start = std::chrono::steady_clock::now();
-        for (int i = 0; i != TEST_SIZE; i++)
-        {
-            intSkiplist.find(intPool[i]);
-        }
-        end = std::chrono::steady_clock::now();
-        cout << "SEARCH TEST: INT SKIPLIST - " << chrono::duration_cast<std::chrono::milliseconds>(end - start).count() << " ms" << endl;
-
-        /* SEARCH TEST: INT MULTIMAP */
-        start = std::chrono::steady_clock::now();
-        for (int i = 0; i != TEST_SIZE; i++)
-        {
-            intMmap.find(intPool[i]);
-        }
-        end = std::chrono::steady_clock::now();
-        cout << "SEARCH TEST: INT MULTIMAP - " << chrono::duration_cast<std::chrono::milliseconds>(end - start).count() << " ms" << endl;
-
-        /* SEARCH TEST: DOUBLE SKIPLIST */
-        start = std::chrono::steady_clock::now();
-        for (int i = 0; i != TEST_SIZE; i++)
-        {
-            doubleSkiplist.find(doublePool[i]);
-        }
-        end = std::chrono::steady_clock::now();
-        cout << "SEARCH TEST: DOUBLE SKIPLIST - " << chrono::duration_cast<std::chrono::milliseconds>(end - start).count() << " ms" << endl;
-
-        /* SEARCH TEST: DOUBLE MULTIMAP */
-        start = std::chrono::steady_clock::now();
-        for (int i = 0; i != TEST_SIZE; i++)
-        {
-            doubleMmap.find(doublePool[i]);
-        }
-        end = std::chrono::steady_clock::now();
-        cout << "SEARCH TEST: DOUBLE MULTIMAP - " << chrono::duration_cast<std::chrono::milliseconds>(end - start).count() << " ms" << endl;
-
-        cout << "SEARCH TESTS [END]..." << endl;
-
-
-
-        cout << endl;
-
-
-
-        cout << "ERASE TESTS [START]..." << endl;
-        /* ERASE TEST: INT SKIPLIST */
-        start = std::chrono::steady_clock::now();
-        for (int i = 0; i != TEST_SIZE; i++)
-        {
-            intSkiplist.erase(intPool[i]);
-        }
-        end = std::chrono::steady_clock::now();
-        cout << "ERASE TEST: INT SKIPLIST - " << chrono::duration_cast<std::chrono::milliseconds>(end - start).count() << " ms" << endl;
-
-        /* ERASE TEST: INT MULTIMAP */
-        start = std::chrono::steady_clock::now();
-        for (int i = 0; i != TEST_SIZE; i++)
-        {
-            intMmap.erase(intPool[i]);
-        }
-        end = std::chrono::steady_clock::now();
-        cout << "ERASE TEST: INT MULTIMAP - " << chrono::duration_cast<std::chrono::milliseconds>(end - start).count() << " ms" << endl;
-
-        /* ERASE TEST: DOUBLE SKIPLIST */
-        start = std::chrono::steady_clock::now();
-        for (int i = 0; i != TEST_SIZE; i++)
-        {
-            doubleSkiplist.erase(doublePool[i]);
-        }
-        end = std::chrono::steady_clock::now();
-        cout << "ERASE TEST: DOUBLE SKIPLIST - " << chrono::duration_cast<std::chrono::milliseconds>(end - start).count() << " ms" << endl;
-
-        /* ERASE TEST: DOUBLE MULTIMAP */
-        start = std::chrono::steady_clock::now();
-        for (int i = 0; i != TEST_SIZE; i++)
-        {
-            doubleMmap.erase(doublePool[i]);
-        }
-        end = std::chrono::steady_clock::now();
-        cout << "ERASE TEST: DOUBLE MULTIMAP - " << chrono::duration_cast<std::chrono::milliseconds>(end - start).count() << " ms" << endl;
-
-        cout << "ERASE TESTS [END]..." << endl;
+        intSkiplist.emplace(intPool[i], TestClass());
     }
+    end = std::chrono::steady_clock::now();
+    cout << "INSERTION TEST: INT SKIPLIST - " << chrono::duration_cast<std::chrono::milliseconds>(end - start).count() << " ms" << endl;
+
+    /* INSERTION TEST: INT MULTIMAP */
+    start = std::chrono::steady_clock::now();
+    for (int i = 0; i != TEST_SIZE; i++)
+    {
+        intMmap.emplace(intPool[i], TestClass());
+    }
+    end = std::chrono::steady_clock::now();
+    cout << "INSERTION TEST: INT MULTIMAP - " << chrono::duration_cast<std::chrono::milliseconds>(end - start).count() << " ms" << endl;
+
+    /* INSERTION TEST: DOUBLE SKIPLIST */
+    start = std::chrono::steady_clock::now();
+    for (int i = 0; i != TEST_SIZE; i++)
+    {
+        doubleSkiplist.emplace(doublePool[i], TestClass());
+    }
+    end = std::chrono::steady_clock::now();
+    cout << "INSERTION TEST: DOUBLE SKIPLIST - " << chrono::duration_cast<std::chrono::milliseconds>(end - start).count() << " ms" << endl;
+
+    /* INSERTION TEST: DOUBLE MULTIMAP */
+    start = std::chrono::steady_clock::now();
+    for (int i = 0; i != TEST_SIZE; i++)
+    {
+        doubleMmap.emplace(doublePool[i], TestClass());
+    }
+    end = std::chrono::steady_clock::now();
+    cout << "INSERTION TEST: DOUBLE MULTIMAP - " << chrono::duration_cast<std::chrono::milliseconds>(end - start).count() << " ms" << endl;
+
+    cout << "INSERTION TESTS [END]..." << endl;
+
+
+
+    cout << endl;
+
+
+
+    cout << "SEARCH TESTS [START]..." << endl;
+    /* SEARCH TEST: INT SKIPLIST */
+    start = std::chrono::steady_clock::now();
+    for (int i = 0; i != TEST_SIZE; i++)
+    {
+        intSkiplist.find(intPool[i]);
+    }
+    end = std::chrono::steady_clock::now();
+    cout << "SEARCH TEST: INT SKIPLIST - " << chrono::duration_cast<std::chrono::milliseconds>(end - start).count() << " ms" << endl;
+
+    /* SEARCH TEST: INT MULTIMAP */
+    start = std::chrono::steady_clock::now();
+    for (int i = 0; i != TEST_SIZE; i++)
+    {
+        intMmap.find(intPool[i]);
+    }
+    end = std::chrono::steady_clock::now();
+    cout << "SEARCH TEST: INT MULTIMAP - " << chrono::duration_cast<std::chrono::milliseconds>(end - start).count() << " ms" << endl;
+
+    /* SEARCH TEST: DOUBLE SKIPLIST */
+    start = std::chrono::steady_clock::now();
+    for (int i = 0; i != TEST_SIZE; i++)
+    {
+        doubleSkiplist.find(doublePool[i]);
+    }
+    end = std::chrono::steady_clock::now();
+    cout << "SEARCH TEST: DOUBLE SKIPLIST - " << chrono::duration_cast<std::chrono::milliseconds>(end - start).count() << " ms" << endl;
+
+    /* SEARCH TEST: DOUBLE MULTIMAP */
+    start = std::chrono::steady_clock::now();
+    for (int i = 0; i != TEST_SIZE; i++)
+    {
+        doubleMmap.find(doublePool[i]);
+    }
+    end = std::chrono::steady_clock::now();
+    cout << "SEARCH TEST: DOUBLE MULTIMAP - " << chrono::duration_cast<std::chrono::milliseconds>(end - start).count() << " ms" << endl;
+
+    cout << "SEARCH TESTS [END]..." << endl;
+
+
+
+    cout << endl;
+
+
+
+    cout << "ERASE TESTS [START]..." << endl;
+    /* ERASE TEST: INT SKIPLIST */
+    start = std::chrono::steady_clock::now();
+    for (int i = 0; i != TEST_SIZE; i++)
+    {
+        intSkiplist.erase(intPool[i]);
+    }
+    end = std::chrono::steady_clock::now();
+    cout << "ERASE TEST: INT SKIPLIST - " << chrono::duration_cast<std::chrono::milliseconds>(end - start).count() << " ms" << endl;
+
+    /* ERASE TEST: INT MULTIMAP */
+    start = std::chrono::steady_clock::now();
+    for (int i = 0; i != TEST_SIZE; i++)
+    {
+        intMmap.erase(intPool[i]);
+    }
+    end = std::chrono::steady_clock::now();
+    cout << "ERASE TEST: INT MULTIMAP - " << chrono::duration_cast<std::chrono::milliseconds>(end - start).count() << " ms" << endl;
+
+    /* ERASE TEST: DOUBLE SKIPLIST */
+    start = std::chrono::steady_clock::now();
+    for (int i = 0; i != TEST_SIZE; i++)
+    {
+        doubleSkiplist.erase(doublePool[i]);
+    }
+    end = std::chrono::steady_clock::now();
+    cout << "ERASE TEST: DOUBLE SKIPLIST - " << chrono::duration_cast<std::chrono::milliseconds>(end - start).count() << " ms" << endl;
+
+    /* ERASE TEST: DOUBLE MULTIMAP */
+    start = std::chrono::steady_clock::now();
+    for (int i = 0; i != TEST_SIZE; i++)
+    {
+        doubleMmap.erase(doublePool[i]);
+    }
+    end = std::chrono::steady_clock::now();
+    cout << "ERASE TEST: DOUBLE MULTIMAP - " << chrono::duration_cast<std::chrono::milliseconds>(end - start).count() << " ms" << endl;
+
+    cout << "ERASE TESTS [END]..." << endl;
 
     cout << endl;
 
