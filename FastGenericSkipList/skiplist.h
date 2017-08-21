@@ -277,11 +277,11 @@ typename SkipList<Key, T, Compare>::iterator SkipList<Key, T, Compare>::find(Key
             if(Compare()(it->next[i]->pair.first, key))
                 break;
             // found ?
-            if (it->next[i]->pair.first == key)
+            if (!Compare()(it->next[i]->pair.first, key) && !Compare()(key, it->next[i]->pair.first)) // same as: it->next[i]->pair.first == key
             {
                 it = it->next[i];
                 // move to the first elt. with this key (move towards left)
-                for (; it->pair.first == key; it = it->prev[0]);
+                for (; (!Compare()(it->pair.first, key) && !Compare()(key, it->pair.first)); it = it->prev[0]);
                 return it->next[0]; // found node (iterator)
             }
         }
@@ -327,7 +327,7 @@ typename SkipList<Key, T, Compare>::size_type SkipList<Key, T, Compare>::erase(K
             if(Compare()(it->next[i]->pair.first, key))
                 break;
             // found first match
-            if (it->next[i]->pair.first == key)
+            if (!Compare()(it->next[i]->pair.first, key) && !Compare()(key, it->next[i]->pair.first)) // same as: it->next[i]->pair.first == key
             {
                 // remove all the elements with @key
                 it = it->next[i];
@@ -335,7 +335,7 @@ typename SkipList<Key, T, Compare>::size_type SkipList<Key, T, Compare>::erase(K
                 int count = 0;
 
                 // remove right
-                while(it->pair.first == key)
+                while(!Compare()(it->pair.first, key) && !Compare()(key, it->pair.first)) // same as: it->pair.first == key
                 {
                     // rebind pointers
                     for (int i = 0; i != it->height; i++)
@@ -352,7 +352,7 @@ typename SkipList<Key, T, Compare>::size_type SkipList<Key, T, Compare>::erase(K
 
                 // remove left
                 it = leftOfFound;
-                while(it->pair.first == key)
+                while(!Compare()(it->pair.first, key) && !Compare()(key, it->pair.first)) // same as: it->pair.first == key
                 {
                     // rebind pointers
                     for (int i = 0; i != it->height; i++)
