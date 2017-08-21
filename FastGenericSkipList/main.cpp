@@ -182,24 +182,41 @@ int main(int argc, char *argv[])
 
     cout << endl;
 
-    // refill and get iterators
+    // refill
     for (int i = 0; i != TEST_SIZE; i++)
     {
-        intSkiplistIterators[i] = intSkiplist.emplace(intPool[i], TestClass());
+        intSkiplist.emplace(intPool[i], TestClass());
     }
     for (int i = 0; i != TEST_SIZE; i++)
     {
-        intMmapIterators[i] = intMmap.emplace(intPool[i], TestClass());
+        intMmap.emplace(intPool[i], TestClass());
     }
     for (int i = 0; i != TEST_SIZE; i++)
     {
-        doubleSkiplistIterators[i] = doubleSkiplist.emplace(doublePool[i], TestClass());
+        doubleSkiplist.emplace(doublePool[i], TestClass());
     }
     for (int i = 0; i != TEST_SIZE; i++)
     {
-        doubleMmapIterators[i] = doubleMmap.emplace(doublePool[i], TestClass());
+        doubleMmap.emplace(doublePool[i], TestClass());
     }
 
+    // get iterators
+    for (int i = 0; i != TEST_SIZE; i++)
+    {
+        intSkiplistIterators[i] = intSkiplist.find(intPool[i])++;
+    }
+    for (int i = 0; i != TEST_SIZE; i++)
+    {
+        intMmapIterators[i] = intMmap.find(intPool[i])++;
+    }
+    for (int i = 0; i != TEST_SIZE; i++)
+    {
+        doubleSkiplistIterators[i] = doubleSkiplist.find(doublePool[i])++;
+    }
+    for (int i = 0; i != TEST_SIZE; i++)
+    {
+        doubleMmapIterators[i] = doubleMmap.find(doublePool[i])++;
+    }
 
 
     cout << "EMPLACE_HINT w/perfect_hint TESTS [START]..." << endl;

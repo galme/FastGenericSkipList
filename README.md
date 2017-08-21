@@ -4,7 +4,7 @@ Fast and Templated Skip List implementation in C++
 The idea for this project was to offer a fast replacement for <a href="http://www.cplusplus.com/reference/map/multimap/">std::multimap</a> (which uses a self-balancing binary search tree).
 
 ## Functionality
-This skiplist covers all general functionality offered by multimap in the exact same way, so the <a href="http://www.cplusplus.com/reference/map/multimap/">documentation</a> for multimap is valid for this SkipList as well:
+This skiplist covers all general functionality offered by multimap in the exact same way (as in the C++11 multimap), so the <a href="http://www.cplusplus.com/reference/map/multimap/">documentation</a> for multimap (C++11) is valid for this SkipList as well:
 - fully templated
 - <a href="http://www.cplusplus.com/reference/map/multimap/emplace/">emplace</a>
 - <a href="http://www.cplusplus.com/reference/map/multimap/emplace_hint/">emplace_hint</a>

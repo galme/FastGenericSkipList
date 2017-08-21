@@ -186,8 +186,9 @@ typename SkipList<Key, T, Compare>::iterator SkipList<Key, T, Compare>::emplace(
 template<typename Key, typename T, class Compare>
 typename SkipList<Key, T, Compare>::iterator SkipList<Key, T, Compare>::emplace_hint(typename SkipList<Key, T, Compare>::iterator position, Key key, T value) // inserts a new element in the SkipList, with a hint on the insertion position
 {
+    position--; // so the perfect position is now just before the insertion point
     // is the given position invalid ?
-    if (Compare()(position.it->pair.first, key) || position == end())
+    if (Compare()(position.it->pair.first, key) || position == end() || position.it == head)
         return emplace(key, value); // --> then we ignore the hint entirely
 
     std::uniform_real_distribution<double> distribution(0.0, 1.0);
@@ -377,17 +378,13 @@ typename SkipList<Key, T, Compare>::size_type SkipList<Key, T, Compare>::erase(K
 template<typename Key, typename T, class Compare>
 typename SkipList<Key, T, Compare>::iterator SkipList<Key, T, Compare>::begin() const // return start iterator of level 0
 {
-    if (head->next[0] != tail)
-        return head->next[0];
-    return head;
+    return head->next[0];
 }
 
 template<typename Key, typename T, class Compare>
 typename SkipList<Key, T, Compare>::iterator SkipList<Key, T, Compare>::end() const // return past-the-end iterator of level 0
 {
-    if (head->next[0] != tail)
-        return tail;
-    return begin();
+    return tail;
 }
 
 template<typename Key, typename T, class Compare>
