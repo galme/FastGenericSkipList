@@ -10,7 +10,8 @@ This skiplist covers all general functionality offered by multimap in the exact 
 - <a href="http://www.cplusplus.com/reference/map/multimap/emplace_hint/">emplace_hint</a>
 - <a href="http://www.cplusplus.com/reference/map/multimap/find/">find</a>
 - <a href="http://www.cplusplus.com/reference/map/multimap/erase/">erase</a>
-
+- <a href="http://www.cplusplus.com/reference/map/multimap/lower_bound/">lower_bound</a>
+- <a href="http://www.cplusplus.com/reference/map/multimap/upper_bound/">upper_bound</a>
 
 - <a href="http://www.cplusplus.com/reference/iterator/BidirectionalIterator/">bidirectional iterators</a>
 - <a href="http://www.cplusplus.com/reference/map/multimap/begin/">begin</a>
