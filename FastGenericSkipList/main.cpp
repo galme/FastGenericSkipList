@@ -260,6 +260,98 @@ int main(int argc, char *argv[])
 
 
 
+    cout << "LOWER_BOUND TESTS [START]..." << endl;
+    const int step = 10;
+    /* LOWER_BOUND TEST: INT SKIPLIST */
+    start = std::chrono::steady_clock::now();
+    for (int i = -TEST_SIZE; i < TEST_SIZE; i += step)
+    {
+        intSkiplist.lower_bound(i);
+    }
+    end = std::chrono::steady_clock::now();
+    cout << "LOWER_BOUND TEST: INT SKIPLIST - " << chrono::duration_cast<std::chrono::milliseconds>(end - start).count() << " ms" << endl;
+
+    /* LOWER_BOUND TEST: INT MULTIMAP */
+    start = std::chrono::steady_clock::now();
+    for (int i = -TEST_SIZE; i < TEST_SIZE; i += step)
+    {
+        intMmap.lower_bound(i);
+    }
+    end = std::chrono::steady_clock::now();
+    cout << "LOWER_BOUND TEST: INT MULTIMAP - " << chrono::duration_cast<std::chrono::milliseconds>(end - start).count() << " ms" << endl;
+
+    /* LOWER_BOUND TEST: DOUBLE SKIPLIST */
+    start = std::chrono::steady_clock::now();
+    for (int i = -TEST_SIZE; i < TEST_SIZE; i += step)
+    {
+        doubleSkiplist.lower_bound(i);
+    }
+    end = std::chrono::steady_clock::now();
+    cout << "LOWER_BOUND TEST: DOUBLE SKIPLIST - " << chrono::duration_cast<std::chrono::milliseconds>(end - start).count() << " ms" << endl;
+
+    /* LOWER_BOUND TEST: DOUBLE MULTIMAP */
+    start = std::chrono::steady_clock::now();
+    for (int i = -TEST_SIZE; i < TEST_SIZE; i += step)
+    {
+        doubleMmap.lower_bound(i);
+    }
+    end = std::chrono::steady_clock::now();
+    cout << "LOWER_BOUND TEST: DOUBLE MULTIMAP - " << chrono::duration_cast<std::chrono::milliseconds>(end - start).count() << " ms" << endl;
+
+    cout << "LOWER_BOUND TESTS [END]..." << endl;
+
+
+
+    cout << endl;
+
+
+
+    cout << "UPPER_BOUND TESTS [START]..." << endl;
+    /* UPPER_BOUND TEST: INT SKIPLIST */
+    start = std::chrono::steady_clock::now();
+    for (int i = -TEST_SIZE; i < TEST_SIZE; i += step)
+    {
+        intSkiplist.upper_bound(i);
+    }
+    end = std::chrono::steady_clock::now();
+    cout << "UPPER_BOUND TEST: INT SKIPLIST - " << chrono::duration_cast<std::chrono::milliseconds>(end - start).count() << " ms" << endl;
+
+    /* UPPER_BOUND TEST: INT MULTIMAP */
+    start = std::chrono::steady_clock::now();
+    for (int i = -TEST_SIZE; i < TEST_SIZE; i += step)
+    {
+        intMmap.upper_bound(i);
+    }
+    end = std::chrono::steady_clock::now();
+    cout << "UPPER_BOUND TEST: INT MULTIMAP - " << chrono::duration_cast<std::chrono::milliseconds>(end - start).count() << " ms" << endl;
+
+    /* UPPER_BOUND TEST: DOUBLE SKIPLIST */
+    start = std::chrono::steady_clock::now();
+    for (int i = -TEST_SIZE; i < TEST_SIZE; i += step)
+    {
+        SkipList<double, TestClass>::iterator it = doubleSkiplist.upper_bound(i);
+    }
+    end = std::chrono::steady_clock::now();
+    cout << "UPPER_BOUND TEST: DOUBLE SKIPLIST - " << chrono::duration_cast<std::chrono::milliseconds>(end - start).count() << " ms" << endl;
+
+    /* UPPER_BOUND TEST: DOUBLE MULTIMAP */
+    start = std::chrono::steady_clock::now();
+    for (int i = -TEST_SIZE; i < TEST_SIZE; i += step)
+    {
+        doubleMmap.upper_bound(i);
+    }
+    end = std::chrono::steady_clock::now();
+    cout << "UPPER_BOUND TEST: DOUBLE MULTIMAP - " << chrono::duration_cast<std::chrono::milliseconds>(end - start).count() << " ms" << endl;
+
+    cout << "UPPER_BOUND TESTS [END]..." << endl;
+
+
+
+    cout << endl;
+
+
+
+
     cout << "SWEEP TESTS [START]..." << endl;
     /* SWEEP TEST: INT SKIPLIST */
     start = std::chrono::steady_clock::now();
