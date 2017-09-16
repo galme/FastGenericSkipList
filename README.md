@@ -20,4 +20,4 @@ This skiplist covers all general functionality offered by multimap in the exact 
 Helper functions (which are not fundamental to this data-structure) are a work in progress.
 
 ## Benchmarks
-To come. The situation currently is that the skip-list is on average 100% slower than the std::multimap containter.
+To come. The situation currently is that the skip-list is on average a bit slower than the std::multimap container.
